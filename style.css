@@ -1,0 +1,104 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #c3f584;
+}
+
+/* additional classes */
+.hide {
+    display: none;
+}
+
+.right {
+    background-color: chartreuse;
+    color: black;
+}
+
+.wrong {
+    background-color: red;
+    color: white;
+}
+
+/* title page container */
+#intro {
+    text-align: center;
+    margin-top: 24%;
+}
+
+.title {
+    font-size: 55px;
+}
+
+p {
+    font-size: 20px;
+    font-style: italic;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+#start {
+    margin-bottom: 10px;
+    background-color: transparent;
+}
+
+.button {
+    border: 2px solid black;
+    color: black;
+    text-decoration: none;
+    padding: 5px;
+    font-size: 20px;
+    width: 100px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.button:hover,
+#start:hover,
+#scores:hover {
+    cursor: pointer;
+    background-color: black;
+    color: white;
+}
+
+/* quiz container page */
+#nav {
+    font-size: 25px;
+}
+
+#high-scores {
+    text-decoration: none;
+    color: black;
+    float: right;
+    margin-top: -25px;
+}
+
+#quiz {
+    margin-top: 17%;
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding: 5px;
+}
+
+.question {
+    font-size: 40px;
+}
+
+.answer {
+    font-size: 20px;
+    padding: 5px;
+    margin: 5px;
+}
+
+.answer:hover {
+    background-color: white;
+    color: black;
+    cursor: pointer;
+}
+
+.next {
+    font-size: 22px;
+    padding: 10px;
+    padding-top: 25px;
+}
+

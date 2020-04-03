@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Maya Test</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
+
+</head>
+<body>
+    <!-- First Page -->
+    <div id="intro">
+        <h1 class="title">The Maya Test</h1>
+        <p class="ml2">How well do you know Maya?</p>
+
+        <button class="button" id="start">Start</button>
+        <a href="highscore.html" class="button" id="scores">Highscores</a>
+    </div>
+
+    <!-- Quiz Page -->
+    <nav class="hide" id="nav">
+        <div class="current-score">Score:</div>
+        <a href="highscore.html" id="high-scores">Highscores</a>
+    </nav>
+
+    <div class="hide" id="quiz">
+        <h1 class="question">Question?</h1>
+        
+        <div class="answer one">answer 1</div>
+        <div class="answer two">answer 2</div>
+        <div class="answer three">answer 3</div>
+        <div class="answer four">answer 4</div>
+
+        <div class="next">Next</div>
+    </div>
+
+<script src="script.js"></script>    
+</body>
+</html>
