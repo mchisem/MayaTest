@@ -19,117 +19,197 @@ anime.timeline({loop: true})
     delay: 5000
   });
 
-// begin the game //
-var start = document.querySelector("#start");
+//variables//
+const start = document.querySelector("#start-button");
+var exit = document.querySelector("#exit");
+var timer = document.querySelector("#timer");
+var next = document.querySelector("#next");
+var highScore = document.querySelector("#score");
+var navbar = document.querySelector("#nav");
 var intro = document.querySelector("#intro");
-var navbar = document.querySelector("#nav")
-var quizContainer = document.querySelector("#quiz");
+var questionContainer = document.querySelector(".questions-container");
 
-var shuffledQuestions, currentQuestion
+var shuffledQuestions;
+var currentQuestion = 0;
 
-start.addEventListener("click", function(){
-  currentQuestion = 0
-  shuffledQuestions = questions.sort(() => Math.random() -.5)
-  startGame();
+var secondsLeft = 75;
+
+//start game event listener//
+start.addEventListener('click', function(){
+    score = 0;
+    currentQuestion = 0;
+    shuffledQuestions = questions.sort(() => Math.random() - .5);
+    startGame();
+    nextShuffle();
 })
 
-function startGame () {
-  intro.classList.add("hide")
-  navbar.classList.remove("hide")
-  quizContainer.classList.remove("hide")
-  showQuestion(question);
+//timer function//
+function startGame() {
+    navbar.classList.remove("hide");
+    intro.classList.add("hide");
+    questionContainer.classList.remove("hide");
+
+    var timerInterval = setInterval(function(){
+      secondsLeft --;
+      timer.textContent = 'Time: ' + secondsLeft;
+
+      if(secondsLeft === 0) {
+          clearInterval(timerInterval);
+          endGame();
+          console.log("Game Over!");
+      }
+  }, 1000);
+
 }
 
-// question array //
+//quiz question/answer array//
 var questions = [
   {
     question:"What is Maya's favorite color?",
     answers: [
-      {text: "Yellow, like her skin.", correct: false},
-      {text: "Baby gum pink.", correct: false},
-      {text: "A Barney purple.", correct: false},
-      {text: "Money green baby.", correct: true}
+      {text: "Yellow, like her skin", correct: false},
+      {text: "Baby gum pink", correct: false},
+      {text: "Money green baby", correct: true},
+      {text: "A Barney purple", correct: false}
     ]
   },
   {
-    question:"What is Maya's social security number?",
+    question:"When is Maya's birthday?",
+    answers: [
+      {text: "Sometime on the Spring?", correct: false},
+      {text: "June 20", correct: false},
+      {text: "January 21", correct: false},
+      {text: "January 22", correct: true}
+    ]
+  },
+  {
+    question:"Has Maya ever been married?",
+    answers: [
+      {text: "No", correct: false},
+      {text: "Yes", correct: true}
+    ]
+  },
+  {
+    question:"BONUS: What is Maya's social security number?",
     answers: [
       {text: "122-34-5678", correct: false},
-      {text: "I don't know,  but I'd like to.", correct: false},
+      {text: "Why do you know this?", correct: true},
+      {text: "I don't know,  but I'd like to", correct: false},
       {text: "What's a social security number?", correct: false},
-      {text: "1-800 she'll never tell.", correct: true}
-    ]
-  },
-  {
-    question:"Does Maya have children?",
-    answers: [
-      {text: "Yes, one.", correct: false},
-      {text: "Nope", correct: false},
-      {text: "She's expecting actually.", correct: false},
-      {text: "All you hoes.", correct: true}
-    ]
-  },
-  {
-    question:"How many siblings does Maya have?",
-    answers: [
-      {text: "She has siblings?", correct: false},
-      {text: "Two!", correct: false},
-      {text: "She's the only girl.", correct: false},
-      {text: "Three that she knows of.", correct: true}
     ]
   },
   {
     question:"What's Maya's favorite pastime?",
     answers: [
-      {text: "Sleeping.", correct: false},
-      {text: "Riding her bike.", correct: false},
-      {text: "Crotcheting- ask her to make you a sweater.", correct: false},
-      {text: "Pimpin' baby.", correct: true}
+      {text: "Sleeping", correct: false},
+      {text: "Riding her bike", correct: false},
+      {text: "Pimpin' baby", correct: true},
+      {text: "Crotcheting- ask her to make you a sweater", correct: false}
     ]
   },
   {
     question:"Where does she want to travel?",
     answers: [
-      {text: "To London so she can try fish and chips.", correct: false},
-      {text: "To Paris so she can see the Eiffle Tower.", correct: false},
-      {text: "Yo mama's house.", correct: false},
-      {text: "Any and everywhere she can shawty.", correct: true}
+      {text: "To London so she can try fish and chips", correct: false},
+      {text: "Any and everywhere she can shawty", correct: true},
+      {text: "To Paris so she can see the Eiffle Tower", correct: false},
+      {text: "Yo mama's house", correct: false}
     ]
   }
-]
+];
 
-var questionTitle = document.querySelector(".quesiton");
-var questionAnswers = document.querySelector(".answers")
-var button = document.createElement("button");
+// display quesitons and answers // 
+var questionTitle = document.querySelector(".title");
+var answers = document.querySelector(".answer");
 
 function showQuestion(question) {
-  questionTitle.innerHTML = question.question
-  question.answers.forEach(function (answer) {
-    // var button = document.createElement("button");
-    button.innerText = answer.text
-    button.classList.add("answer");
-    // if(answer.correct) {
-    //     button.dataset.correct = answer.correct
-    // } 
-   
-    // button.addEventListener('click', answerSelect)
-    answers.appendChild(button)
+    questionTitle.innerHTML = question.question;
+    question.answers.forEach(function (answer) {
+        var button = document.createElement("button");
+        button.innerText = answer.text
+        button.classList.add("answer");
+        answers.appendChild(button);
+        if (answer.correct) {
+            button.dataset.correct = answer.correct
+          }
+          button.addEventListener('click', pickAnswer)
+    })
+}
+
+// answer selection
+function pickAnswer(e) {
+    const selectedAnswer = e.target
+    const correct = selectedAnswer.dataset.correct
+    checkAnswer(document.body, correct)
+    Array.from(answers.children).forEach(button => {
+    checkAnswer(button, button.dataset.correct)
+})
+    if (shuffledQuestions.length > currentQuestion + 1) {
+        console.log("done!");
+    } else {
+        endGame();
+    }
+}
+
+function checkAnswer(button, correct) {
+    if(correct) {
+        button.classList.add("right");
+        score+=10;
+        highScore.textContent = 'Score: ' + score;
+
+    } else {
+        button.classList.add("wrong");
+        score+=0;
+        highScore.textContent = 'Score: ' + score;
+    }
+}
+
+// next button event listener//
+next.addEventListener('click', function(){
+    currentQuestion++;
+    nextShuffle();
 })
 
+// randomly shuffles questions//
+function nextShuffle() {
+    clearAnswers();
+    showQuestion(shuffledQuestions[currentQuestion]);
 }
 
 // clear out the previous answers//
 function clearAnswers(){
-  while(answers.firstChild) {
-      answers.removeChild
-      (answers.firstChild)
-  }
+    while(answers.firstChild) {
+        answers.removeChild
+        (answers.firstChild)
+    }
 }
 
+//end game screen//
+function endGame() {
+    clearInterval(timer);
+  
+    var gameOver =
+      `
+      <h3>Game Over!</h3>
+      <div class="answers-container">
+        You got ${score}/100
+      <div>
 
-// next question function //
-var next = document.querySelector(".next");
+      `
+    document.querySelector(".questions-container").innerHTML = gameOver;
+  }
 
-next.addEventListener("click", function(){
-  showQuestion();
-})
+// end quiz score/input name
+// var input =document.querySelector("#name");
+// var submit = document.querySelector("#submit");
+
+// function inputName () {
+//     submit.addEventListener("click", userInfo)
+// }
+
+// function userInfo(){
+//     var name = createInput.value;
+//     localStorage.setItem("name", name);
+//     localStorage.setItem("score", score);
+//     window.location.href = "highscores.html";
+// }
